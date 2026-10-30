@@ -250,6 +250,9 @@ const consonantOnsets = new Set([
   "tl", "tr", "vl", "vr", "sc", "șc", "sp", "șp", "st", "șt",
   "scr", "șcr", "spl", "șpl", "spr", "șpr", "str", "ștr"
 ]);
+const verifiedSyllabifications = new Map([
+  ["ianuarie", "ia-nu-a-ri-e"]
+]);
 
 let round = [];
 let currentIndex = 0;
@@ -258,6 +261,8 @@ let answered = false;
 let mistakes = loadMistakes();
 
 function syllabify(word) {
+  if (verifiedSyllabifications.has(word)) return verifiedSyllabifications.get(word);
+
   const letters = Array.from(word);
   const nuclei = [];
 

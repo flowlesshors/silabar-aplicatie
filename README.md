@@ -10,6 +10,7 @@ Deschide `index.html` într-un browser. Nu sunt necesare instalări sau un serve
 
 - Alege una dintre cele patru variante pentru fiecare cuvânt.
 - Primești imediat răspunsul corect și o explicație.
+- Exersează și cuvintele din listele ilustrate furnizate; rundele au câte 12 cuvinte și parcurg banca înainte să o reia.
 - Verifică și cuvinte proprii; estimarea automată rămâne neverificată până când introduci rezultate identice din DOOM³ și silabe.ro.
 - Răspunsurile greșite sunt păstrate în lista de recapitulare, împreună cu numărul de încercări.
 - Poți elimina cuvintele revăzute individual sau poți șterge lista.

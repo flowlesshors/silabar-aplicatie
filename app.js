@@ -211,6 +211,7 @@ questions.push(...imageEntries
   })));
 
 const STORAGE_KEY = "silabar-mistakes-v1";
+const MANUAL_WORDS_STORAGE_KEY = "silabar-manual-words-v1";
 const quizWords = new Set(questions.map((question) => question.word));
 
 const wordElement = document.querySelector("#word");
@@ -240,6 +241,11 @@ const doomResultInput = document.querySelector("#doom-result");
 const silabeResultInput = document.querySelector("#silabe-result");
 const compareSourcesButton = document.querySelector("#compare-sources");
 const sourceCheckFeedback = document.querySelector("#source-check-feedback");
+const manualWordForm = document.querySelector("#manual-word-form");
+const manualWordInput = document.querySelector("#manual-word");
+const manualSyllabificationInput = document.querySelector("#manual-syllabification");
+const manualWordFeedback = document.querySelector("#manual-word-feedback");
+const manualWordList = document.querySelector("#manual-word-list");
 const vowels = new Set(["a", "ă", "â", "e", "i", "î", "o", "u"]);
 const diphthongs = new Set([
   "ai", "au", "ea", "ei", "eu", "ia", "ie", "ii", "io", "iu",
@@ -258,7 +264,8 @@ let round = [];
 let currentIndex = 0;
 let score = 0;
 let answered = false;
-let mistakes = loadMistakes();
+let mistakes = {};
+let manualQuestions = [];
 
 function syllabify(word) {
   if (verifiedSyllabifications.has(word)) return verifiedSyllabifications.get(word);
@@ -396,6 +403,58 @@ compareSourcesButton.addEventListener("click", () => {
   setSourceCheckFeedback(`Transcrierile introduse coincid: ${confirmed}. Verificarea este manuală și nu confirmă că sursele au fost copiate corect sau că despărțirea este normativă; estimarea automată nu este folosită drept dovadă.`);
 });
 
+manualWordForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const word = normalizeManualWord(manualWordInput.value);
+  const enteredSyllables = manualSyllabificationInput.value.trim()
+    .split(/[\s\-‐‑‒–—•·]+/u)
+    .map(normalizeManualWord);
+
+  if (!word || !/^[a-zăâîșț]+$/u.test(word)) {
+    showManualWordFeedback("Introdu un singur cuvânt, folosind doar litere românești.", true);
+    manualWordInput.focus();
+    return;
+  }
+
+  if (
+    enteredSyllables.length < 2
+    || enteredSyllables.some((syllable) => !/^[a-zăâîșț]+$/u.test(syllable))
+    || enteredSyllables.join("") !== word
+  ) {
+    showManualWordFeedback("Despărțirea trebuie să aibă cel puțin două silabe și să refacă exact cuvântul, cu toate diacriticele.", true);
+    manualSyllabificationInput.focus();
+    return;
+  }
+
+  const syllabification = enteredSyllables.join("-");
+  const isExistingManualWord = manualQuestions.some((question) => question.word === word);
+  if (quizWords.has(word) && !isExistingManualWord) {
+    showManualWordFeedback("Cuvântul există deja în quiz și nu poate fi adăugat de două ori.", true);
+    manualWordInput.focus();
+    return;
+  }
+
+  const question = createManualQuestion(word, syllabification);
+  if (!question) {
+    showManualWordFeedback("Cuvântul este prea scurt pentru a crea patru variante distincte de răspuns.", true);
+    manualWordInput.focus();
+    return;
+  }
+
+  const updatedQuestions = [
+    ...manualQuestions.filter((item) => item.word !== word),
+    question
+  ];
+  if (!saveManualQuestions(updatedQuestions)) return;
+
+  manualQuestions = updatedQuestions;
+  questions.splice(0, questions.length, ...questions.filter((item) => item.word !== word), question);
+  quizWords.add(word);
+  manualWordForm.reset();
+  renderManualWordList();
+  showManualWordFeedback(`„${word}” → ${syllabification} a fost salvat și va apărea în rundele viitoare.`);
+});
+
 function showStorageNotice(message) {
   storageNotice.textContent = message;
   storageNotice.hidden = false;
@@ -428,6 +487,144 @@ function saveMistakes() {
   } catch (error) {
     showStorageNotice("Nu am putut salva lista pe acest dispozitiv. Verifică setările de stocare ale browserului.");
     console.error("Nu s-au putut salva răspunsurile greșite:", error);
+  }
+}
+
+function normalizeManualWord(value) {
+  return value.trim().normalize("NFC").toLocaleLowerCase("ro-RO")
+    .replaceAll("ş", "ș")
+    .replaceAll("ţ", "ț");
+}
+
+function createManualQuestion(word, syllabification) {
+  const choices = [syllabification];
+  const letters = Array.from(word);
+
+  for (let cut = 1; cut < letters.length && choices.length < 4; cut += 1) {
+    const candidate = `${letters.slice(0, cut).join("")}-${letters.slice(cut).join("")}`;
+    if (!choices.includes(candidate)) choices.push(candidate);
+  }
+
+  for (let firstCut = 1; firstCut < letters.length - 1 && choices.length < 4; firstCut += 1) {
+    for (let secondCut = firstCut + 1; secondCut < letters.length && choices.length < 4; secondCut += 1) {
+      const candidate = [
+        letters.slice(0, firstCut).join(""),
+        letters.slice(firstCut, secondCut).join(""),
+        letters.slice(secondCut).join("")
+      ].join("-");
+      if (!choices.includes(candidate)) choices.push(candidate);
+    }
+  }
+
+  if (choices.length < 4) return null;
+
+  return {
+    word,
+    answer: syllabification,
+    choices,
+    explanation: "Despărțirea a fost introdusă manual și salvată de tine pe acest dispozitiv."
+  };
+}
+
+function loadManualQuestions() {
+  try {
+    const saved = localStorage.getItem(MANUAL_WORDS_STORAGE_KEY);
+    if (!saved) return [];
+
+    const parsed = JSON.parse(saved);
+    if (!Array.isArray(parsed)) {
+      throw new Error("Formatul băncii personale nu este valid.");
+    }
+
+    const loadedQuestions = [];
+    for (const entry of parsed) {
+      if (
+        !entry || typeof entry.word !== "string" || typeof entry.answer !== "string"
+        || !/^[a-zăâîșț]+$/u.test(entry.word)
+      ) {
+        console.error("O intrare invalidă din banca personală a fost ignorată.");
+        continue;
+      }
+
+      const syllables = entry.answer.trim().split(/[\s\-‐‑‒–—•·]+/u).map(normalizeManualWord);
+      if (
+        syllables.length < 2
+        || syllables.some((syllable) => !/^[a-zăâîșț]+$/u.test(syllable))
+        || syllables.join("") !== normalizeManualWord(entry.word)
+      ) {
+        console.error(`Despărțirea salvată pentru „${entry.word}” nu mai este validă și a fost ignorată.`);
+        continue;
+      }
+
+      const question = createManualQuestion(normalizeManualWord(entry.word), syllables.join("-"));
+      if (question && !loadedQuestions.some((item) => item.word === question.word)) {
+        loadedQuestions.push(question);
+      } else {
+        console.error(`Intrarea personală „${entry.word}” nu poate forma o întrebare validă și a fost ignorată.`);
+      }
+    }
+    return loadedQuestions;
+  } catch (error) {
+    showStorageNotice("Banca personală nu a putut fi citită. Verifică stocarea locală a browserului.");
+    console.error("Nu s-a putut încărca banca personală:", error);
+    return [];
+  }
+}
+
+function saveManualQuestions(items) {
+  try {
+    localStorage.setItem(MANUAL_WORDS_STORAGE_KEY, JSON.stringify(
+      items.map(({ word, answer }) => ({ word, answer }))
+    ));
+    storageNotice.hidden = true;
+    return true;
+  } catch (error) {
+    showStorageNotice("Cuvântul nu a putut fi salvat pe acest dispozitiv. Verifică setările sau spațiul de stocare al browserului.");
+    console.error("Nu s-a putut salva banca personală:", error);
+    return false;
+  }
+}
+
+function showManualWordFeedback(message, isError = false) {
+  manualWordFeedback.textContent = message;
+  manualWordFeedback.classList.toggle("is-error", isError);
+  manualWordFeedback.hidden = false;
+}
+
+function renderManualWordList() {
+  manualWordList.replaceChildren();
+  if (manualQuestions.length === 0) return;
+
+  const heading = document.createElement("p");
+  heading.className = "manual-word-list-title";
+  heading.textContent = `Salvate pentru quiz: ${manualQuestions.length}`;
+  manualWordList.append(heading);
+
+  for (const question of manualQuestions) {
+    const row = document.createElement("div");
+    row.className = "manual-word-item";
+    const entry = document.createElement("span");
+    entry.textContent = `${question.word}: ${question.answer}`;
+    const removeButton = document.createElement("button");
+    removeButton.className = "resolve-button";
+    removeButton.type = "button";
+    removeButton.textContent = "Elimină";
+    removeButton.setAttribute("aria-label", `Elimină ${question.word} din banca personală`);
+    removeButton.addEventListener("click", () => {
+      const updatedQuestions = manualQuestions.filter((item) => item.word !== question.word);
+      if (!saveManualQuestions(updatedQuestions)) return;
+
+      manualQuestions = updatedQuestions;
+      questions.splice(0, questions.length, ...questions.filter((item) => item.word !== question.word));
+      quizWords.delete(question.word);
+      delete mistakes[question.word];
+      saveMistakes();
+      renderManualWordList();
+      renderMistakes();
+      showManualWordFeedback(`„${question.word}” a fost eliminat din banca personală.`);
+    });
+    row.append(entry, removeButton);
+    manualWordList.append(row);
   }
 }
 
@@ -619,5 +816,16 @@ clearMistakesButton.addEventListener("click", () => {
   renderMistakes();
 });
 
+manualQuestions = loadManualQuestions().filter((question) => {
+  if (quizWords.has(question.word)) {
+    console.error(`Cuvântul personal „${question.word}” există deja în quiz și a fost ignorat.`);
+    return false;
+  }
+  questions.push(question);
+  quizWords.add(question.word);
+  return true;
+});
+mistakes = loadMistakes();
+renderManualWordList();
 renderMistakes();
 startRound();

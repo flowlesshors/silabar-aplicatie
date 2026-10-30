@@ -238,6 +238,112 @@ h1 span {
   font-size: 13px;
 }
 
+.manual-word-bank {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 30px;
+  align-items: start;
+  margin: 0 0 20px;
+  padding: 24px 29px;
+  border: 1px solid #e6e9df;
+  border-radius: 14px;
+  background: var(--white);
+}
+
+.manual-word-bank-copy .eyebrow {
+  margin-bottom: 8px;
+}
+
+.manual-word-bank-copy h2 {
+  margin: 0 0 5px;
+  font-family: Manrope, sans-serif;
+  font-size: 23px;
+  letter-spacing: -1px;
+}
+
+.manual-word-bank-copy > p:last-child {
+  margin: 0;
+  color: #777d72;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.manual-word-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  margin-bottom: 10px;
+}
+
+.manual-word-fields label {
+  display: block;
+  min-height: 28px;
+  margin-bottom: 7px;
+  color: #535b50;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.manual-word-fields input {
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  padding: 0 12px;
+  border: 1px solid #dfe3d9;
+  border-radius: 7px;
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+}
+
+.manual-word-fields input::placeholder {
+  color: #a0a49b;
+  font-size: 12px;
+}
+
+.manual-word-feedback {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-radius: 7px;
+  background: #e2ebdf;
+  color: #315b39;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.manual-word-feedback.is-error {
+  background: var(--red-soft);
+  color: #7d4039;
+}
+
+.manual-word-list {
+  margin-top: 12px;
+}
+
+.manual-word-list-title {
+  margin: 0 0 6px;
+  color: #777d72;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.manual-word-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 0;
+  border-top: 1px solid #eeede7;
+  color: var(--ink);
+  font-size: 12px;
+}
+
+.manual-word-item .resolve-button {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
 .word-checker {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -871,7 +977,16 @@ h1 span {
     gap: 16px;
   }
 
+  .manual-word-bank {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
   .source-inputs {
+    grid-template-columns: 1fr;
+  }
+
+  .manual-word-fields {
     grid-template-columns: 1fr;
   }
 

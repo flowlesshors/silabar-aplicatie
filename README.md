@@ -14,10 +14,11 @@ Deschide `index.html` într-un browser. Nu sunt necesare instalări sau un serve
 - Despărțirile celor 69 de cuvinte sunt transcrise din listele ilustrate pe care le-ai indicat ca verificate; nu sunt prezentate ca verificări independente făcute din nou de aplicație.
 - Deschide sursele de lângă fiecare explicație: DOOM³ este folosit pentru forma lexicală, iar silabe.ro pentru despărțirea afișată. Nu pretindem că zece dicționare independente confirmă fiecare cuvânt.
 - Verifică și cuvinte proprii; estimarea automată rămâne neverificată până când introduci rezultate identice din DOOM³ și silabe.ro.
+- Adaugă cuvinte și despărțiri proprii în „Banca ta personală”; intrările apar în rundele următoare și pot fi modificate sau eliminate.
 - Răspunsurile greșite sunt păstrate în lista de recapitulare, împreună cu numărul de încercări.
 - Poți elimina cuvintele revăzute individual sau poți șterge lista.
 
-Lista de recapitulare este salvată în `localStorage` și rămâne pe dispozitivul și în browserul folosit.
+Lista de recapitulare și banca personală sunt salvate în `localStorage` și rămân pe dispozitivul și în browserul folosit; nu se sincronizează între dispozitive. Despărțirile adăugate manual sunt contribuții ale utilizatorului, nu sunt verificate automat de dicționare.
 Cuvintele introduse sunt procesate local. Verificarea în DOOM³ și silabe.ro este manuală: deschide ambele surse din aplicație și introdu despărțirea completă afișată de fiecare. Aplicația compară transcrierile, dar nu accesează automat site-urile și nu poate confirma că datele au fost copiate corect. Dacă o sursă nu indică despărțirea completă sau sursele diferă, rezultatul rămâne neverificat. Estimarea automată nu este dovadă.
 
 DOOM³ este dicționarul normativ al Institutului de Lingvistică „Iorgu Iordan – Alexandru Rosetti”; în articolele sale, unele indicații de despărțire sunt pentru capăt de rând, nu neapărat o silabisire completă. Consultă [îndrumările DOOM³](https://doom.lingv.ro/indrumari). Datele DOOM³ sunt publicate sub licența CC BY-NC-SA 4.0.

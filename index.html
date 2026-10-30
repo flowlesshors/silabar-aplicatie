@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#f6f5f0">
     <meta name="description" content="Exersează despărțirea în silabe, primește explicații și revino asupra răspunsurilor greșite.">
     <title>Silabar — Învață să desparți în silabe</title>
-    <link rel="stylesheet" href="style.css?v=7">
-    <script src="app.js?v=8" defer></script>
+    <link rel="stylesheet" href="style.css?v=8">
+    <script src="app.js?v=9" defer></script>
   </head>
   <body>
     <header class="topbar">
@@ -71,16 +71,39 @@
         </form>
       </section>
 
+      <section class="manual-word-bank" aria-labelledby="manual-word-bank-title">
+        <div class="manual-word-bank-copy">
+          <p class="eyebrow">BANCA TA PERSONALĂ</p>
+          <h2 id="manual-word-bank-title">Adaugă un cuvânt</h2>
+          <p>Introdu cuvântul și despărțirea pe care o consideri corectă. Va fi păstrată pe acest dispozitiv și inclusă în rundele viitoare.</p>
+        </div>
+        <form id="manual-word-form" class="manual-word-form" novalidate>
+          <div class="manual-word-fields">
+            <div>
+              <label for="manual-word">Cuvânt</label>
+              <input id="manual-word" name="word" type="text" maxlength="32" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="de exemplu: ianuarie">
+            </div>
+            <div>
+              <label for="manual-syllabification">Despărțirea în silabe</label>
+              <input id="manual-syllabification" name="syllabification" type="text" maxlength="64" autocomplete="off" placeholder="exemplu: ia-nu-a-ri-e">
+            </div>
+          </div>
+          <button class="button button-dark" type="submit">Salvează pentru quiz <span aria-hidden="true">→</span></button>
+          <p id="manual-word-feedback" class="manual-word-feedback" role="status" aria-live="polite" hidden></p>
+          <div id="manual-word-list" class="manual-word-list" aria-label="Cuvintele adăugate de tine"></div>
+        </form>
+      </section>
+
       <div id="storage-notice" class="storage-notice" role="status" hidden></div>
 
       <section class="practice-layout" aria-label="Exercițiu de despărțire în silabe">
         <div class="quiz-card">
           <div class="quiz-topline">
             <div class="exercise-label"><span class="exercise-icon" aria-hidden="true">✳</span> EXERCIȚIUL ZILEI</div>
-            <span id="question-count" class="question-count">1 / 12</span>
+            <span id="question-count" class="question-count">1 / 80</span>
           </div>
 
-          <div class="progress-track" role="progressbar" aria-label="Progresul exercițiului" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0">
+          <div class="progress-track" role="progressbar" aria-label="Progresul exercițiului" aria-valuemin="0" aria-valuemax="80" aria-valuenow="0">
             <span id="progress-fill"></span>
           </div>
 

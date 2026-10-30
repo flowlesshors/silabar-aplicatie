@@ -169,9 +169,33 @@ const imageEntries = [
   ["bacalaureat", ["ba-ca-la-u-re-at"]]
 ];
 
+const vowels = new Set(["a", "ă", "â", "e", "i", "î", "o", "u"]);
+
 function createChoices(word, acceptedAnswers) {
   const letters = Array.from(word);
   const choices = [...new Set(acceptedAnswers)];
+
+  for (let position = 1; position < letters.length; position += 1) {
+    if (!vowels.has(letters[position - 1]) || !vowels.has(letters[position])) continue;
+
+    for (const answer of acceptedAnswers) {
+      const boundaries = [0];
+      for (const syllable of answer.split("-")) {
+        boundaries.push(boundaries.at(-1) + Array.from(syllable).length);
+      }
+
+      const candidateBoundaries = boundaries.includes(position)
+        ? boundaries.filter((boundary) => boundary !== position)
+        : [...boundaries, position].sort((left, right) => left - right);
+      if (candidateBoundaries.length < 3) continue;
+
+      const candidate = candidateBoundaries.slice(0, -1)
+        .map((start, index) => letters.slice(start, candidateBoundaries[index + 1]).join(""))
+        .join("-");
+      if (!choices.includes(candidate)) choices.push(candidate);
+      if (choices.length === 4) return choices;
+    }
+  }
 
   const addBoundaryShifts = (minimumSyllableLength, maximumChoices = 4) => {
     for (const offset of [-1, 1, -2, 2]) {
@@ -272,7 +296,6 @@ const manualWordInput = document.querySelector("#manual-word");
 const manualSyllabificationInput = document.querySelector("#manual-syllabification");
 const manualWordFeedback = document.querySelector("#manual-word-feedback");
 const manualWordList = document.querySelector("#manual-word-list");
-const vowels = new Set(["a", "ă", "â", "e", "i", "î", "o", "u"]);
 const diphthongs = new Set([
   "ai", "au", "ea", "ei", "eu", "ia", "ie", "ii", "io", "iu",
   "oa", "oi", "ou", "ua", "uă", "ăi", "ău", "îi", "îu"

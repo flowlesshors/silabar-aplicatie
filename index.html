@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f5f0">
+    <meta name="description" content="Exersează despărțirea în silabe, primește explicații și revino asupra răspunsurilor greșite.">
+    <title>Silabar — Învață să desparți în silabe</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Silabar, pagina principală">
+        <span class="brand-mark" aria-hidden="true">s.</span>
+        <span>silabar</span>
+      </a>
+      <span class="topbar-note"><span class="status-dot"></span> Un pas mic, o silabă pe rând</span>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <div class="intro-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span> JOACĂ-TE CU LIMBA ROMÂNĂ</p>
+          <h1 id="page-title">Cuvintele au<br><span>ritmul lor.</span></h1>
+          <p class="intro-description">Desparte cuvintele în silabe, descoperă regula și învață din fiecare încercare.</p>
+        </div>
+        <div class="intro-art" aria-hidden="true">
+          <span class="art-sun"></span>
+          <span class="art-word">ca · să</span>
+          <span class="art-caption">două bătăi de inimă</span>
+          <span class="art-spark spark-one">✳</span>
+          <span class="art-spark spark-two">✳</span>
+          <span class="art-squiggle"></span>
+        </div>
+      </section>
+
+      <div id="storage-notice" class="storage-notice" role="status" hidden></div>
+
+      <section class="practice-layout" aria-label="Exercițiu de despărțire în silabe">
+        <div class="quiz-card">
+          <div class="quiz-topline">
+            <div class="exercise-label"><span class="exercise-icon" aria-hidden="true">✳</span> EXERCIȚIUL ZILEI</div>
+            <span id="question-count" class="question-count">1 / 12</span>
+          </div>
+
+          <div class="progress-track" role="progressbar" aria-label="Progresul exercițiului" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0">
+            <span id="progress-fill"></span>
+          </div>
+
+          <div id="question-panel">
+            <p class="question-prompt">Cum se desparte în silabe?</p>
+            <h2 id="word" class="word" aria-live="polite">masă</h2>
+            <p class="question-hint">Alege varianta corectă</p>
+            <div id="answers" class="answers" role="group" aria-label="Variante de răspuns"></div>
+            <div id="feedback" class="feedback" role="status" aria-live="polite" hidden></div>
+            <div class="quiz-actions">
+              <span id="score-label" class="score-label">0 răspunsuri corecte</span>
+              <button id="next-button" class="button button-dark" type="button" hidden>Următorul cuvânt <span aria-hidden="true">→</span></button>
+            </div>
+          </div>
+
+          <div id="results-panel" class="results-panel" hidden>
+            <span class="results-star" aria-hidden="true">✳</span>
+            <p class="eyebrow">AI TERMINAT EXERCIȚIUL</p>
+            <h2 id="results-title">Bravo!</h2>
+            <p id="results-copy"></p>
+            <button id="restart-button" class="button button-dark" type="button">Mai exersează <span aria-hidden="true">↻</span></button>
+          </div>
+        </div>
+
+        <aside class="mistakes-card" aria-labelledby="mistakes-title">
+          <div class="mistakes-heading">
+            <div>
+              <p class="eyebrow">COLȚUL DE RECAPITULARE</p>
+              <h2 id="mistakes-title">Mai exersează</h2>
+            </div>
+            <span id="mistake-count" class="mistake-count" aria-label="Numărul răspunsurilor de revăzut">0</span>
+          </div>
+          <p class="mistakes-intro">Răspunsurile greșite rămân aici, ca să te poți întoarce la ele.</p>
+          <div id="mistakes-list" class="mistakes-list">
+            <div class="empty-state">
+              <span class="empty-icon" aria-hidden="true">♡</span>
+              <p>Încă nu ai greșeli de revăzut.<br>Continuă exercițiul!</p>
+            </div>
+          </div>
+          <button id="clear-mistakes" class="clear-button" type="button" hidden>Șterge lista</button>
+        </aside>
+      </section>
+
+      <section class="tip-strip" aria-label="Regulă de reținut">
+        <span class="tip-icon" aria-hidden="true">✳</span>
+        <p><strong>Un pont:</strong> fiecare silabă are un sunet vocalic. Spune cuvântul rar și ascultă-i ritmul.</p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>Silabar <span aria-hidden="true">·</span> Exersează în ritmul tău</span>
+      <span>Progresul tău rămâne salvat pe acest dispozitiv.</span>
+    </footer>
+  </body>
+</html>

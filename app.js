@@ -97,6 +97,119 @@ const questions = [
   }
 ];
 
+const imageEntries = [
+  ["subiect", ["su-biect"]],
+  ["anaerobic", ["an-a-e-ro-bic", "a-na-e-ro-bic"]],
+  ["adiacent", ["a-di-a-cent"]],
+  ["autopsie", ["a-u-top-si-e", "a-ut-op-si-e"]],
+  ["bâtlan", ["bâ-tlan"]],
+  ["cianură", ["ci-a-nu-ră"]],
+  ["diacon", ["di-a-con"]],
+  ["genunchieră", ["ge-nun-chi-e-ră"]],
+  ["leandru", ["le-an-dru"]],
+  ["triftong", ["tri-ftong", "trif-tong"]],
+  ["inapt", ["in-apt", "i-napt"]],
+  ["distincție", ["dis-tinc-ți-e"]],
+  ["gaudeamus", ["gau-de-a-mus"]],
+  ["glaucom", ["glau-com"]],
+  ["igienă", ["i-gi-e-nă"]],
+  ["jaguar", ["ja-guar"]],
+  ["maiou", ["ma-iou"]],
+  ["obiect", ["o-biect"]],
+  ["subiectivitate", ["su-biec-ti-vi-ta-te"]],
+  ["anestezia", ["a-nes-te-zi-a"]],
+  ["autumnal", ["a-u-tum-nal"]],
+  ["bojdeucă", ["boj-deu-că"]],
+  ["geografie", ["ge-o-gra-fi-e"]],
+  ["diagnostic", ["di-a-gnos-tic", "di-ag-nos-tic"]],
+  ["îngenunchea", ["în-ge-nun-chea"]],
+  ["proroc", ["pro-roc"]],
+  ["trunchia", ["trun-chi-a"]],
+  ["diavol", ["dia-vol"]],
+  ["doilea", ["do-i-lea", "doi-lea"]],
+  ["gheișă", ["ghei-șă"]],
+  ["guașă", ["gua-șă"]],
+  ["ioniza", ["i-o-ni-za"]],
+  ["machia", ["ma-chi-a"]],
+  ["pauper", ["pau-per"]],
+  ["coafor", ["coa-for"]],
+  ["obiectivitate", ["o-biec-ti-vi-ta-te"]],
+  ["canion", ["ca-nion"]],
+  ["biopsie", ["bi-o-psi-e", "bi-op-si-e"]],
+  ["chihlimbar", ["chi-hlim-bar"]],
+  ["dezinsecție", ["dez-in-sec-ți-e", "de-zin-sec-ți-e"]],
+  ["prerie", ["pre-ri-e"]],
+  ["monoclu", ["mo-no-clu", "mon-o-clu"]],
+  ["diftong", ["di-ftong", "dif-tong"]],
+  ["pașoptist", ["pa-șop-tist", "paș-op-tist"]],
+  ["dioptrie", ["di-op-tri-e"]],
+  ["foitaj", ["fo-i-taj"]],
+  ["gâtlej", ["gâ-tlej"]],
+  ["ianuarie", ["ia-nu-a-ri-e"]],
+  ["înjunghia", ["în-jun-ghi-a"]],
+  ["machiaj", ["ma-chi-aj"]],
+  ["pecetlui", ["pe-ce-tlu-i"]],
+  ["pionier", ["pi-o-ni-er"]],
+  ["psihiatru", ["psi-hi-a-tru"]],
+  ["bărbierit", ["băr-bi-e-rit"]],
+  ["stearină", ["ste-a-ri-nă"]],
+  ["toaletă", ["toa-le-tă"]],
+  ["fiasco", ["fias-co"]],
+  ["piohierat", ["pi-o-hi-e-rat"]],
+  ["psihiatrie", ["psi-hi-a-tri-e"]],
+  ["coniac", ["co-niac"]],
+  ["trotuar", ["tro-tuar"]],
+  ["abstract", ["ab-stract"]],
+  ["maistru", ["mais-tru"]],
+  ["piuneză", ["piu-ne-ză"]],
+  ["pioneză", ["pio-ne-ză"]],
+  ["toastă", ["toas-tă"]],
+  ["cernoziom", ["cer-no-zi-om"]],
+  ["ucrainean", ["u-cra-i-nean"]],
+  ["bacalaureat", ["ba-ca-la-u-re-at"]]
+];
+
+function createChoices(word, acceptedAnswers) {
+  const letters = Array.from(word);
+  const choices = [...acceptedAnswers];
+  const offsets = [-1, 1, -2, 2, -3, 3, -4, 4];
+
+  for (const answer of acceptedAnswers) {
+    const syllables = answer.split("-");
+    const boundaries = [0];
+    for (const syllable of syllables) {
+      boundaries.push(boundaries.at(-1) + Array.from(syllable).length);
+    }
+
+    for (let index = 1; index < boundaries.length - 1; index += 1) {
+      for (const offset of offsets) {
+        const movedBoundary = boundaries[index] + offset;
+        if (movedBoundary <= boundaries[index - 1] || movedBoundary >= boundaries[index + 1]) continue;
+
+        const candidateBoundaries = [...boundaries];
+        candidateBoundaries[index] = movedBoundary;
+        const candidate = candidateBoundaries.slice(0, -1)
+          .map((start, syllableIndex) => letters.slice(start, candidateBoundaries[syllableIndex + 1]).join(""))
+          .join("-");
+        if (!choices.includes(candidate)) choices.push(candidate);
+        if (choices.length === 4) return choices;
+      }
+    }
+  }
+
+  return choices;
+}
+
+const existingWords = new Set(questions.map((question) => question.word));
+questions.push(...imageEntries
+  .filter(([word]) => !existingWords.has(word))
+  .map(([word, answers]) => ({
+    word,
+    answers,
+    choices: createChoices(word, answers),
+    explanation: "Despărțirea este preluată din lista ilustrată furnizată de tine. Variantele alternative din material sunt acceptate."
+  })));
+
 const STORAGE_KEY = "silabar-mistakes-v1";
 const quizWords = new Set(questions.map((question) => question.word));
 
@@ -443,18 +556,22 @@ function selectAnswer(selectedButton, selectedAnswer, question) {
   explanation.textContent = question.explanation;
   const sources = document.createElement("p");
   sources.className = "feedback-sources";
-  sources.append("Surse: ");
-  const doomLink = document.createElement("a");
-  doomLink.href = question.doomUrl;
-  doomLink.target = "_blank";
-  doomLink.rel = "noopener noreferrer";
-  doomLink.textContent = "DOOM³ (ortografie)";
-  const syllablesLink = document.createElement("a");
-  syllablesLink.href = question.syllablesUrl;
-  syllablesLink.target = "_blank";
-  syllablesLink.rel = "noopener noreferrer";
-  syllablesLink.textContent = "silabe.ro (silabisire)";
-  sources.append(doomLink, " · ", syllablesLink);
+  if (question.doomUrl && question.syllablesUrl) {
+    sources.append("Surse: ");
+    const doomLink = document.createElement("a");
+    doomLink.href = question.doomUrl;
+    doomLink.target = "_blank";
+    doomLink.rel = "noopener noreferrer";
+    doomLink.textContent = "DOOM³ (ortografie)";
+    const syllablesLink = document.createElement("a");
+    syllablesLink.href = question.syllablesUrl;
+    syllablesLink.target = "_blank";
+    syllablesLink.rel = "noopener noreferrer";
+    syllablesLink.textContent = "silabe.ro (silabisire)";
+    sources.append(doomLink, " · ", syllablesLink);
+  } else {
+    sources.textContent = "Sursă: materialele ilustrate furnizate de tine.";
+  }
   feedbackElement.replaceChildren(heading, explanation, sources);
   feedbackElement.hidden = false;
   nextButton.textContent = currentIndex === round.length - 1 ? "Vezi rezultatul" : "Următorul cuvânt";

@@ -560,6 +560,16 @@ h1 span {
   font-size: 12px;
 }
 
+.feedback-sources {
+  margin: 8px 0 0;
+  font-size: 10px;
+}
+
+.feedback-sources a {
+  color: inherit;
+  text-underline-offset: 2px;
+}
+
 .quiz-actions {
   min-height: 39px;
   margin-top: 14px;

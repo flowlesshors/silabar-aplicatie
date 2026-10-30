@@ -3,188 +3,102 @@ const questions = [
     word: "masă",
     answer: "ma-să",
     choices: ["mas-ă", "ma-să", "m-a-să", "maș-ă"],
-    explanation: "Litera s este între două vocale, așa că trece la silaba următoare: ma-să. Fiecare silabă păstrează un sunet vocalic."
+    explanation: "Silabisirea de pe silabe.ro este ma-să. Sursa prezintă separat mai multe forme omografe; pentru substantivul «masă», aceasta este forma indicată.",
+    doomUrl: "https://doom.lingv.ro/cautare/q/mas%C4%83",
+    syllablesUrl: "https://www.silabe.ro/desparte-in-silabe-masa.html"
   },
   {
     word: "carte",
     answer: "car-te",
     choices: ["ca-rte", "car-te", "c-ar-te", "cart-e"],
-    explanation: "În grupul de consoane rt, prima consoană r închide silaba, iar t începe silaba următoare: car-te."
+    explanation: "Silabisirea de pe silabe.ro este car-te. DOOM³ confirmă forma «carte» ca substantiv.",
+    doomUrl: "https://doom.lingv.ro/cautare/q/carte",
+    syllablesUrl: "https://www.silabe.ro/desparte-in-silabe-carte.html"
   },
   {
     word: "copil",
     answer: "co-pil",
     choices: ["cop-il", "co-pil", "c-op-il", "co-pi-l"],
-    explanation: "Consoana p se află între două vocale și începe silaba următoare: co-pil, nu cop-il."
-  },
-  {
-    word: "copac",
-    answer: "co-pac",
-    choices: ["cop-ac", "co-pac", "co-pa-c", "c-opac"],
-    explanation: "Când o singură consoană se află între două vocale, ea trece la silaba următoare: co-pac."
+    explanation: "Silabisirea de pe silabe.ro este co-pil. DOOM³ listează forma «copil».",
+    doomUrl: "https://doom.lingv.ro/cautare/q/copil",
+    syllablesUrl: "https://www.silabe.ro/desparte-in-silabe-copil.html"
   },
   {
     word: "floare",
     answer: "floa-re",
     choices: ["flo-a-re", "floa-re", "floar-e", "f-loa-re"],
-    explanation: "Grupul vocalic oa se pronunță împreună în aceeași silabă. De aceea despărțirea este floa-re."
-  },
-  {
-    word: "frumos",
-    answer: "fru-mos",
-    choices: ["frum-os", "fru-mos", "fru-mo-s", "f-ru-mos"],
-    explanation: "Consoana m, aflată între vocale, începe silaba următoare. Grupul fr rămâne împreună la început: fru-mos."
+    explanation: "Silabisirea de pe silabe.ro este floa-re. DOOM³ listează forma «floare».",
+    doomUrl: "https://doom.lingv.ro/cautare/q/floare",
+    syllablesUrl: "https://www.silabe.ro/desparte-in-silabe-floare.html"
   },
   {
     word: "fereastră",
     answer: "fe-reas-tră",
     choices: ["fer-eas-tră", "fe-reas-tră", "fe-reast-ră", "f-e-reas-tră"],
-    explanation: "Consoana r dintre vocale trece la silaba următoare. Grupul str poate începe o silabă, așa că rămâne împreună: fe-reas-tră."
+    explanation: "Silabisirea de pe silabe.ro este fe-reas-tră. DOOM³ listează forma «fereastră».",
+    doomUrl: "https://doom.lingv.ro/cautare/q/fereastr%C4%83",
+    syllablesUrl: "https://www.silabe.ro/desparte-in-silabe-fereastra.html"
   },
   {
     word: "mașină",
     answer: "ma-și-nă",
     choices: ["maș-i-nă", "ma-și-nă", "ma-șin-ă", "m-a-și-nă"],
-    explanation: "Consoanele ș și n, aflate între vocale, trec fiecare la începutul silabei următoare: ma-și-nă."
+    explanation: "Silabisirea de pe silabe.ro este ma-și-nă. DOOM³ listează forma «mașină».",
+    doomUrl: "https://doom.lingv.ro/cautare/q/ma%C8%99in%C4%83",
+    syllablesUrl: "https://www.silabe.ro/desparte-in-silabe-masina.html"
   },
   {
     word: "pădure",
     answer: "pă-du-re",
     choices: ["păd-u-re", "pă-du-re", "pă-dur-e", "p-ă-du-re"],
-    explanation: "Consoanele d și r sunt între vocale și deschid silabele următoare: pă-du-re."
+    explanation: "Silabisirea de pe silabe.ro este pă-du-re. DOOM³ listează forma «pădure».",
+    doomUrl: "https://doom.lingv.ro/cautare/q/p%C4%83dure",
+    syllablesUrl: "https://www.silabe.ro/desparte-in-silabe-padure.html"
   },
   {
     word: "albină",
     answer: "al-bi-nă",
     choices: ["a-lbi-nă", "al-bi-nă", "al-bin-ă", "a-l-b-i-nă"],
-    explanation: "Între două vocale, grupul de două consoane lb se desparte: prima închide silaba, iar a doua o începe pe următoarea: al-bi-nă."
+    explanation: "Silabisirea de pe silabe.ro este al-bi-nă. DOOM³ listează forma «albină».",
+    doomUrl: "https://doom.lingv.ro/cautare/q/albin%C4%83",
+    syllablesUrl: "https://www.silabe.ro/desparte-in-silabe-albina.html"
   },
   {
     word: "strugure",
     answer: "stru-gu-re",
     choices: ["strug-ure", "stru-gu-re", "s-tru-gu-re", "stru-gur-e"],
-    explanation: "Grupul str poate sta la începutul unei silabe și rămâne împreună. Consoanele g și r, între vocale, încep silabe noi: stru-gu-re."
+    explanation: "Silabisirea de pe silabe.ro este stru-gu-re. DOOM³ listează forma «strugure».",
+    doomUrl: "https://doom.lingv.ro/cautare/q/strugure",
+    syllablesUrl: "https://www.silabe.ro/desparte-in-silabe-strugure.html"
   },
   {
     word: "învățător",
     answer: "în-vă-ță-tor",
     choices: ["î-nvă-ță-tor", "în-vă-ță-tor", "în-văț-ă-tor", "în-vă-țăt-or"],
-    explanation: "Grupul de litere în formează prima silabă, iar v începe silaba următoare. Apoi cuvântul continuă în ritmul ță-tor: în-vă-ță-tor."
+    explanation: "Silabisirea de pe silabe.ro este în-vă-ță-tor. DOOM³ listează forma «învățător».",
+    doomUrl: "https://doom.lingv.ro/cautare/q/%C3%AEnv%C4%83%C8%9B%C4%83tor",
+    syllablesUrl: "https://www.silabe.ro/desparte-in-silabe-invatator.html"
+  },
+  {
+    word: "examen",
+    answer: "e-xa-men",
+    choices: ["ex-a-men", "e-xa-men", "e-xam-en", "exa-men"],
+    explanation: "Silabisirea de pe silabe.ro este e-xa-men. DOOM³ listează forma «examen» și pronunțarea grupului inițial x.",
+    doomUrl: "https://doom.lingv.ro/cautare/q/examen",
+    syllablesUrl: "https://www.silabe.ro/desparte-in-silabe-examen.html"
+  },
+  {
+    word: "subiect",
+    answer: "su-biect",
+    choices: ["sub-iect", "su-biect", "su-bi-ect", "s-ubiect"],
+    explanation: "Silabisirea de pe silabe.ro este su-biect. DOOM³ indică despărțirea la capăt de rând «-biect».",
+    doomUrl: "https://doom.lingv.ro/cautare/q/subiect",
+    syllablesUrl: "https://www.silabe.ro/desparte-in-silabe-subiect.html"
   }
 ];
-
-const referenceEntries = [
-  ["subiect", ["su-biect"]],
-  ["anaerobic", ["an-a-e-ro-bic", "a-na-e-ro-bic"]],
-  ["adiacent", ["a-di-a-cent"]],
-  ["autopsie", ["a-u-top-si-e", "a-ut-op-si-e"]],
-  ["bâtlan", ["bâ-tlan"]],
-  ["cianură", ["ci-a-nu-ră"]],
-  ["diacon", ["di-a-con"]],
-  ["genunchieră", ["ge-nun-chi-e-ră"]],
-  ["leandru", ["le-an-dru"]],
-  ["triftong", ["tri-ftong", "trif-tong"]],
-  ["inapt", ["in-apt", "i-napt"]],
-  ["distincție", ["dis-tinc-ți-e"]],
-  ["gaudeamus", ["gau-de-a-mus"]],
-  ["glaucom", ["glau-com"]],
-  ["igienă", ["i-gi-e-nă"]],
-  ["jaguar", ["ja-guar"]],
-  ["maiou", ["ma-iou"]],
-  ["obiect", ["o-biect"]],
-  ["subiectivitate", ["su-biec-ti-vi-ta-te"]],
-  ["anestezia", ["a-nes-te-zi-a"]],
-  ["autumnal", ["a-u-tum-nal"]],
-  ["bojdeucă", ["boj-deu-că"]],
-  ["geografie", ["ge-o-gra-fi-e"]],
-  ["diagnostic", ["di-a-gnos-tic", "di-ag-nos-tic"]],
-  ["îngenunchea", ["în-ge-nun-chea"]],
-  ["proroc", ["pro-roc"]],
-  ["trunchia", ["trun-chi-a"]],
-  ["diavol", ["dia-vol"]],
-  ["doilea", ["do-i-lea", "doi-lea"]],
-  ["gheișă", ["ghei-șă"]],
-  ["guașă", ["gua-șă"]],
-  ["ioniză", ["i-o-ni-ză"]],
-  ["machia", ["ma-chi-a"]],
-  ["pauper", ["pau-per"]],
-  ["coafor", ["coa-for"]],
-  ["obiectivitate", ["o-biec-ti-vi-ta-te"]],
-  ["canion", ["ca-nion"]],
-  ["biopsie", ["bi-o-psi-e", "bi-op-si-e"]],
-  ["chihlimbar", ["chi-hlim-bar"]],
-  ["dezinsecție", ["dez-in-sec-ți-e", "de-zin-sec-ți-e"]],
-  ["prerie", ["pre-ri-e"]],
-  ["monoclu", ["mo-no-clu", "mon-o-clu"]],
-  ["diftong", ["di-ftong", "dif-tong"]],
-  ["pașoptist", ["pa-șop-tist", "paș-op-tist"]],
-  ["dioptrie", ["di-op-tri-e"]],
-  ["foitaj", ["fo-i-taj"]],
-  ["gâtlej", ["gâ-tlej"]],
-  ["ianuarie", ["ia-nu-a-ri-e"]],
-  ["înjunghia", ["în-jun-ghi-a"]],
-  ["machiaj", ["ma-chi-aj"]],
-  ["pecetlui", ["pe-ce-tlu-i"]],
-  ["pionier", ["pi-o-ni-er"]],
-  ["psihiatru", ["psi-hi-a-tru"]],
-  ["bărbierit", ["băr-bi-e-rit"]],
-  ["stearină", ["ste-a-ri-nă"]],
-  ["toaletă", ["toa-le-tă"]],
-  ["fiasco", ["fias-co"]],
-  ["piohierat", ["pi-o-hi-e-rat"]],
-  ["psihiatrie", ["psi-hi-a-tri-e"]],
-  ["coniac", ["co-niac"]],
-  ["trotuar", ["tro-tuar"]],
-  ["abstract", ["ab-stract"]],
-  ["maistru", ["mais-tru"]],
-  ["piuneză", ["piu-ne-ză"]],
-  ["pioneză", ["pio-ne-ză"]],
-  ["toastă", ["toas-tă"]],
-  ["cernoziom", ["cer-no-zi-om"]],
-  ["ucrainean", ["u-cra-i-nean"]],
-  ["bacalaureat", ["ba-ca-la-u-re-at"]]
-];
-
-function createSyllabificationChoices(word, acceptedAnswers) {
-  const letters = Array.from(word);
-  const choices = [...acceptedAnswers];
-  const offsets = [-1, 1, -2, 2, -3, 3, -4, 4];
-
-  for (const answer of acceptedAnswers) {
-    const syllables = answer.split("-");
-    const boundaries = [0];
-    for (const syllable of syllables) {
-      boundaries.push(boundaries.at(-1) + Array.from(syllable).length);
-    }
-
-    for (let index = 1; index < boundaries.length - 1; index += 1) {
-      for (const offset of offsets) {
-        const movedBoundary = boundaries[index] + offset;
-        if (movedBoundary <= boundaries[index - 1] || movedBoundary >= boundaries[index + 1]) continue;
-
-        const candidateBoundaries = [...boundaries];
-        candidateBoundaries[index] = movedBoundary;
-        const candidate = candidateBoundaries.slice(0, -1)
-          .map((start, syllableIndex) => letters.slice(start, candidateBoundaries[syllableIndex + 1]).join(""))
-          .join("-");
-        if (!choices.includes(candidate)) choices.push(candidate);
-        if (choices.length === 4) return choices;
-      }
-    }
-  }
-
-  return choices;
-}
-
-questions.push(...referenceEntries.map(([word, answers]) => ({
-  word,
-  answers,
-  choices: createSyllabificationChoices(word, answers),
-  explanation: "Aceasta este o despărțire indicată în materialul trimis. Pentru unele cuvinte sunt acceptate și variantele afișate."
-})));
 
 const STORAGE_KEY = "silabar-mistakes-v1";
-const ROUND_SIZE = 12;
+const quizWords = new Set(questions.map((question) => question.word));
 
 const wordElement = document.querySelector("#word");
 const answersElement = document.querySelector("#answers");
@@ -228,7 +142,6 @@ let round = [];
 let currentIndex = 0;
 let score = 0;
 let answered = false;
-let questionDeck = [];
 let mistakes = loadMistakes();
 
 function syllabify(word) {
@@ -362,7 +275,7 @@ compareSourcesButton.addEventListener("click", () => {
   }
 
   const confirmed = doomResultInput.value.trim().split(/[\s\-‐‑‒–—•·]+/u).join("-");
-  setSourceCheckFeedback(`Cele două transcrieri coincid: ${confirmed}. Confirmat doar pentru această verificare manuală; estimarea automată nu este folosită drept dovadă.`);
+  setSourceCheckFeedback(`Transcrierile introduse coincid: ${confirmed}. Verificarea este manuală și nu confirmă că sursele au fost copiate corect sau că despărțirea este normativă; estimarea automată nu este folosită drept dovadă.`);
 });
 
 function showStorageNotice(message) {
@@ -380,7 +293,9 @@ function loadMistakes() {
       throw new Error("Formatul listei salvate nu este valid.");
     }
 
-    return parsed;
+    return Object.fromEntries(
+      Object.entries(parsed).filter(([word]) => quizWords.has(word))
+    );
   } catch (error) {
     showStorageNotice("Lista de recapitulare nu a putut fi citită. Răspunsurile din această vizită vor fi păstrate doar cât timp pagina rămâne deschisă.");
     console.error("Nu s-au putut încărca răspunsurile greșite:", error);
@@ -526,7 +441,21 @@ function selectAnswer(selectedButton, selectedAnswer, question) {
   heading.textContent = isCorrect ? "Exact! Ai găsit ritmul cuvântului." : `Aproape! Despărțirea indicată este ${answerText}.`;
   const explanation = document.createElement("span");
   explanation.textContent = question.explanation;
-  feedbackElement.replaceChildren(heading, explanation);
+  const sources = document.createElement("p");
+  sources.className = "feedback-sources";
+  sources.append("Surse: ");
+  const doomLink = document.createElement("a");
+  doomLink.href = question.doomUrl;
+  doomLink.target = "_blank";
+  doomLink.rel = "noopener noreferrer";
+  doomLink.textContent = "DOOM³ (ortografie)";
+  const syllablesLink = document.createElement("a");
+  syllablesLink.href = question.syllablesUrl;
+  syllablesLink.target = "_blank";
+  syllablesLink.rel = "noopener noreferrer";
+  syllablesLink.textContent = "silabe.ro (silabisire)";
+  sources.append(doomLink, " · ", syllablesLink);
+  feedbackElement.replaceChildren(heading, explanation, sources);
   feedbackElement.hidden = false;
   nextButton.textContent = currentIndex === round.length - 1 ? "Vezi rezultatul" : "Următorul cuvânt";
   nextButton.hidden = false;
@@ -544,8 +473,7 @@ function showResults() {
 }
 
 function startRound() {
-  if (questionDeck.length === 0) questionDeck = shuffle(questions);
-  round = questionDeck.splice(0, ROUND_SIZE);
+  round = shuffle(questions);
   currentIndex = 0;
   score = 0;
   questionPanel.hidden = false;

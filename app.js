@@ -171,32 +171,54 @@ const imageEntries = [
 
 function createChoices(word, acceptedAnswers) {
   const letters = Array.from(word);
-  const choices = [...acceptedAnswers];
-  const offsets = [-1, 1, -2, 2, -3, 3, -4, 4];
+  const choices = [...new Set(acceptedAnswers)];
+
+  const addBoundaryShifts = (minimumSyllableLength, maximumChoices = 4) => {
+    for (const offset of [-1, 1, -2, 2]) {
+      for (const answer of acceptedAnswers) {
+        const syllables = answer.split("-");
+        const boundaries = [0];
+        for (const syllable of syllables) {
+          boundaries.push(boundaries.at(-1) + Array.from(syllable).length);
+        }
+
+        for (let index = 1; index < boundaries.length - 1; index += 1) {
+          const movedBoundary = boundaries[index] + offset;
+          if (movedBoundary <= boundaries[index - 1] || movedBoundary >= boundaries[index + 1]) continue;
+
+          const candidateBoundaries = [...boundaries];
+          candidateBoundaries[index] = movedBoundary;
+          const candidateSyllables = candidateBoundaries.slice(0, -1)
+            .map((start, syllableIndex) => letters.slice(start, candidateBoundaries[syllableIndex + 1]).join(""));
+          if (candidateSyllables.some((syllable) => Array.from(syllable).length < minimumSyllableLength)) continue;
+
+          const candidate = candidateSyllables.join("-");
+          if (choices.includes(candidate)) continue;
+          choices.push(candidate);
+          if (choices.length === maximumChoices) return choices;
+        }
+      }
+    }
+    return choices;
+  };
+
+  addBoundaryShifts(2);
+  if (choices.length === 4) return choices;
 
   for (const answer of acceptedAnswers) {
     const syllables = answer.split("-");
-    const boundaries = [0];
-    for (const syllable of syllables) {
-      boundaries.push(boundaries.at(-1) + Array.from(syllable).length);
-    }
+    for (let index = 0; index < syllables.length - 1; index += 1) {
+      const merged = [...syllables];
+      merged.splice(index, 2, `${syllables[index]}${syllables[index + 1]}`);
+      if (merged.length < 2 || merged.some((syllable) => Array.from(syllable).length < 2)) continue;
 
-    for (let index = 1; index < boundaries.length - 1; index += 1) {
-      for (const offset of offsets) {
-        const movedBoundary = boundaries[index] + offset;
-        if (movedBoundary <= boundaries[index - 1] || movedBoundary >= boundaries[index + 1]) continue;
-
-        const candidateBoundaries = [...boundaries];
-        candidateBoundaries[index] = movedBoundary;
-        const candidate = candidateBoundaries.slice(0, -1)
-          .map((start, syllableIndex) => letters.slice(start, candidateBoundaries[syllableIndex + 1]).join(""))
-          .join("-");
-        if (!choices.includes(candidate)) choices.push(candidate);
-        if (choices.length === 4) return choices;
-      }
+      const candidate = merged.join("-");
+      if (!choices.includes(candidate)) choices.push(candidate);
+      if (choices.length === 4) return choices;
     }
   }
 
+  if (choices.length < 3) addBoundaryShifts(1, 3);
   return choices;
 }
 
@@ -209,6 +231,10 @@ questions.push(...imageEntries
     choices: createChoices(word, answers),
     explanation: "Despărțirea este preluată din lista ilustrată furnizată de tine. Variantele alternative din material sunt acceptate."
   })));
+
+for (const question of questions) {
+  question.choices = createChoices(question.word, question.answers ?? [question.answer]);
+}
 
 const STORAGE_KEY = "silabar-mistakes-v1";
 const MANUAL_WORDS_STORAGE_KEY = "silabar-manual-words-v1";
@@ -275,8 +301,8 @@ function syllabify(word) {
 
   for (let index = 0; index < letters.length;) {
     if (!vowels.has(letters[index])) {
-      index += 1;
-      continue;
+    index += 1;
+    continue;
     }
 
     const pair = letters.slice(index, index + 2).join("");
@@ -295,14 +321,14 @@ function syllabify(word) {
     let boundary = right.start;
 
     if (consonantCount === 1) {
-      boundary = left.end;
+    boundary = left.end;
     } else if (consonantCount === 2) {
-      const cluster = letters.slice(left.end, right.start).join("");
-      boundary = consonantOnsets.has(cluster) ? left.end : left.end + 1;
+    const cluster = letters.slice(left.end, right.start).join("");
+    boundary = consonantOnsets.has(cluster) ? left.end : left.end + 1;
     } else if (consonantCount > 2) {
-      const between = letters.slice(left.end, right.start).join("");
-      const onsetLength = [3, 2].find((length) => consonantOnsets.has(between.slice(-length))) ?? 1;
-      boundary = right.start - onsetLength;
+    const between = letters.slice(left.end, right.start).join("");
+    const onsetLength = [3, 2].find((length) => consonantOnsets.has(between.slice(-length))) ?? 1;
+    boundary = right.start - onsetLength;
     }
 
     boundaries.push(boundary);
@@ -436,7 +462,7 @@ manualWordForm.addEventListener("submit", (event) => {
 
   const question = createManualQuestion(word, syllabification);
   if (!question) {
-    showManualWordFeedback("Cuvântul este prea scurt pentru a crea patru variante distincte de răspuns.", true);
+    showManualWordFeedback("Cuvântul este prea scurt pentru a crea cel puțin trei variante apropiate de răspuns.", true);
     manualWordInput.focus();
     return;
   }
@@ -497,26 +523,9 @@ function normalizeManualWord(value) {
 }
 
 function createManualQuestion(word, syllabification) {
-  const choices = [syllabification];
-  const letters = Array.from(word);
+  const choices = createChoices(word, [syllabification]);
 
-  for (let cut = 1; cut < letters.length && choices.length < 4; cut += 1) {
-    const candidate = `${letters.slice(0, cut).join("")}-${letters.slice(cut).join("")}`;
-    if (!choices.includes(candidate)) choices.push(candidate);
-  }
-
-  for (let firstCut = 1; firstCut < letters.length - 1 && choices.length < 4; firstCut += 1) {
-    for (let secondCut = firstCut + 1; secondCut < letters.length && choices.length < 4; secondCut += 1) {
-      const candidate = [
-        letters.slice(0, firstCut).join(""),
-        letters.slice(firstCut, secondCut).join(""),
-        letters.slice(secondCut).join("")
-      ].join("-");
-      if (!choices.includes(candidate)) choices.push(candidate);
-    }
-  }
-
-  if (choices.length < 4) return null;
+  if (choices.length < 3) return null;
 
   return {
     word,

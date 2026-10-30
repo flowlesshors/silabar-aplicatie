@@ -8,7 +8,7 @@ Deschide `index.html` într-un browser. Nu sunt necesare instalări sau un serve
 
 ## Cum funcționează
 
-- Alege una dintre cele patru variante pentru fiecare cuvânt.
+- Alege dintre până la patru variante apropiate: opțiunile greșite păstrează literele și mută limitele dintre silabe ori unesc silabe vecine. Cuvintele scurte pot avea trei variante dacă nu se pot genera patru opțiuni plauzibile.
 - Primești imediat răspunsul corect și o explicație.
 - Banca are 80 de cuvinte distincte: cele 69 de cuvinte din imaginile furnizate de tine (inclusiv „subiect”, care apare deja în quiz) și 11 intrări suplimentare verificate individual în DOOM³ și silabe.ro.
 - Despărțirile celor 69 de cuvinte sunt transcrise din listele ilustrate pe care le-ai indicat ca verificate; nu sunt prezentate ca verificări independente făcute din nou de aplicație.

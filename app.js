@@ -164,7 +164,7 @@ const imageEntries = [
   ["piuneză", ["piu-ne-ză"]],
   ["pioneză", ["pio-ne-ză"]],
   ["toastă", ["toas-tă"]],
-  ["cernoziom", ["cer-no-zi-om"]],
+  ["cernoziom", ["cer-no-ziom"]],
   ["ucrainean", ["u-cra-i-nean"]],
   ["bacalaureat", ["ba-ca-la-u-re-at"]]
 ];
@@ -253,7 +253,13 @@ questions.push(...imageEntries
     word,
     answers,
     choices: createChoices(word, answers),
-    explanation: "Despărțirea este preluată din lista ilustrată furnizată de tine. Variantele alternative din material sunt acceptate."
+    explanation: word === "cernoziom"
+      ? "Silabe.ro indică despărțirea cer-no-zióm. DOOM³ confirmă secvența finală «-ziom» la despărțirea la capăt de rând."
+      : "Despărțirea este preluată din lista ilustrată furnizată de tine. Variantele alternative din material sunt acceptate.",
+    ...(word === "cernoziom" && {
+      doomUrl: "https://doom.lingv.ro/cautare/q/cernoziom",
+      syllablesUrl: "https://www.silabe.ro/desparte-in-silabe-cernoziom.html"
+    })
   })));
 
 for (const question of questions) {

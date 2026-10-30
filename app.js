@@ -96,7 +96,18 @@ const wordCheckerForm = document.querySelector("#word-checker-form");
 const customWordInput = document.querySelector("#custom-word");
 const wordCheckerResult = document.querySelector("#word-checker-result");
 
-const knownSyllabifications = new Map(questions.map(({ word, answer }) => [word, answer]));
+const normalizeLookupWord = (word) => word.normalize("NFD").replace(/\p{M}/gu, "");
+const knownSyllabifications = new Map(
+  [...questions, ...[
+    { word: "poveste", answer: "po-ves-te" },
+    { word: "fereastra", answer: "fe-reas-tră" },
+    { word: "școală", answer: "școa-lă" },
+    { word: "caut", answer: "ca-ut" },
+    { word: "fiica", answer: "fii-ca" },
+    { word: "exemplu", answer: "e-xem-plu" },
+    { word: "geografie", answer: "ge-o-gra-fi-e" }
+  ]].map(({ word, answer }) => [normalizeLookupWord(word), answer])
+);
 const vowels = new Set(["a", "ă", "â", "e", "i", "î", "o", "u"]);
 const diphthongs = new Set([
   "ai", "au", "ea", "ei", "eu", "ia", "ie", "ii", "io", "iu",
@@ -184,9 +195,9 @@ wordCheckerForm.addEventListener("submit", (event) => {
     return;
   }
 
-  const knownAnswer = knownSyllabifications.get(word);
+  const knownAnswer = knownSyllabifications.get(normalizeLookupWord(word));
   if (knownAnswer) {
-    showWordCheck(`${word} se desparte: ${knownAnswer}. Această despărțire este verificată în exercițiile aplicației.`);
+    showWordCheck(`${word} se desparte: ${knownAnswer}. Această despărțire a fost verificată.`);
     return;
   }
 

@@ -15,4 +15,4 @@ Deschide `index.html` într-un browser. Nu sunt necesare instalări sau un serve
 - Poți elimina cuvintele revăzute individual sau poți șterge lista.
 
 Lista de recapitulare este salvată în `localStorage` și rămâne pe dispozitivul și în browserul folosit.
-Cuvintele introduse în verificator sunt procesate local. Pentru cuvintele necunoscute aplicației, despărțirea este o estimare și poate avea excepții; verifică forma în dicționar dacă ai nevoie de certitudine.
+Cuvintele introduse în verificator sunt procesate local. Lista verificată include și exemple comparate cu [silabe.ro](https://www.silabe.ro/). Pentru cuvintele necunoscute aplicației, despărțirea este o estimare și poate avea excepții; verifică forma în dicționar dacă ai nevoie de certitudine.

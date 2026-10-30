@@ -238,6 +238,92 @@ h1 span {
   font-size: 13px;
 }
 
+.word-checker {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 30px;
+  align-items: center;
+  margin: 0 0 20px;
+  padding: 24px 29px;
+  border: 1px solid #e6e9df;
+  border-radius: 14px;
+  background: #edf0e8;
+}
+
+.word-checker-copy .eyebrow {
+  margin-bottom: 8px;
+}
+
+.word-checker-copy h2 {
+  margin: 0 0 5px;
+  font-family: Manrope, sans-serif;
+  font-size: 23px;
+  letter-spacing: -1px;
+}
+
+.word-checker-copy > p:last-child {
+  margin: 0;
+  color: #777d72;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.word-checker-form label {
+  display: block;
+  margin-bottom: 7px;
+  color: #535b50;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.word-checker-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.word-checker-controls input {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid #dfe3d9;
+  border-radius: 7px;
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+}
+
+.word-checker-controls input::placeholder {
+  color: #a0a49b;
+}
+
+.word-checker-controls .button {
+  flex: 0 0 auto;
+}
+
+.word-checker-note {
+  margin: 7px 0 0;
+  color: #858980;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.word-checker-result {
+  margin-top: 9px;
+  padding: 10px 12px;
+  border-radius: 7px;
+  background: #e2ebdf;
+  color: #315b39;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.word-checker-result.is-error {
+  background: var(--red-soft);
+  color: #7d4039;
+}
+
 .practice-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 310px;
@@ -689,6 +775,11 @@ h1 span {
 
   .practice-layout {
     grid-template-columns: 1fr;
+  }
+
+  .word-checker {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 
   .quiz-card {

@@ -92,12 +92,106 @@ const mistakesListElement = document.querySelector("#mistakes-list");
 const mistakeCountElement = document.querySelector("#mistake-count");
 const clearMistakesButton = document.querySelector("#clear-mistakes");
 const storageNotice = document.querySelector("#storage-notice");
+const wordCheckerForm = document.querySelector("#word-checker-form");
+const customWordInput = document.querySelector("#custom-word");
+const wordCheckerResult = document.querySelector("#word-checker-result");
+
+const knownSyllabifications = new Map(questions.map(({ word, answer }) => [word, answer]));
+const vowels = new Set(["a", "ă", "â", "e", "i", "î", "o", "u"]);
+const diphthongs = new Set([
+  "ai", "au", "ea", "ei", "eu", "ia", "ie", "ii", "io", "iu",
+  "oa", "oi", "ou", "ua", "uă", "ăi", "ău", "îi", "îu"
+]);
+const consonantOnsets = new Set([
+  "bl", "br", "cl", "cr", "dr", "fl", "fr", "gl", "gr", "pl", "pr",
+  "tl", "tr", "vl", "vr", "sc", "șc", "sp", "șp", "st", "șt",
+  "scr", "șcr", "spl", "șpl", "spr", "șpr", "str", "ștr"
+]);
 
 let round = [];
 let currentIndex = 0;
 let score = 0;
 let answered = false;
 let mistakes = loadMistakes();
+
+function syllabify(word) {
+  const letters = Array.from(word);
+  const nuclei = [];
+
+  for (let index = 0; index < letters.length;) {
+    if (!vowels.has(letters[index])) {
+      index += 1;
+      continue;
+    }
+
+    const pair = letters.slice(index, index + 2).join("");
+    const length = diphthongs.has(pair) ? 2 : 1;
+    nuclei.push({ start: index, end: index + length });
+    index += length;
+  }
+
+  if (nuclei.length < 2) return word;
+
+  const boundaries = [0];
+  for (let index = 0; index < nuclei.length - 1; index += 1) {
+    const left = nuclei[index];
+    const right = nuclei[index + 1];
+    const consonantCount = right.start - left.end;
+    let boundary = right.start;
+
+    if (consonantCount === 1) {
+      boundary = left.end;
+    } else if (consonantCount === 2) {
+      const cluster = letters.slice(left.end, right.start).join("");
+      boundary = consonantOnsets.has(cluster) ? left.end : left.end + 1;
+    } else if (consonantCount > 2) {
+      const between = letters.slice(left.end, right.start).join("");
+      const onsetLength = [3, 2].find((length) => consonantOnsets.has(between.slice(-length))) ?? 1;
+      boundary = right.start - onsetLength;
+    }
+
+    boundaries.push(boundary);
+  }
+  boundaries.push(letters.length);
+
+  const syllables = boundaries.slice(0, -1).map((start, index) =>
+    letters.slice(start, boundaries[index + 1]).join("")
+  );
+  return syllables.join("-");
+}
+
+function showWordCheck(message, isError = false) {
+  wordCheckerResult.textContent = message;
+  wordCheckerResult.classList.toggle("is-error", isError);
+  wordCheckerResult.hidden = false;
+}
+
+wordCheckerForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const word = customWordInput.value.trim().normalize("NFC").toLocaleLowerCase("ro-RO")
+    .replaceAll("ş", "ș")
+    .replaceAll("ţ", "ț");
+
+  if (!word) {
+    showWordCheck("Scrie un cuvânt înainte să apeși „Verifică”.", true);
+    customWordInput.focus();
+    return;
+  }
+
+  if (!/^[a-zăâîșț]+$/u.test(word)) {
+    showWordCheck("Introdu un singur cuvânt, folosind doar litere românești.", true);
+    customWordInput.focus();
+    return;
+  }
+
+  const knownAnswer = knownSyllabifications.get(word);
+  if (knownAnswer) {
+    showWordCheck(`${word} se desparte: ${knownAnswer}. Această despărțire este verificată în exercițiile aplicației.`);
+    return;
+  }
+
+  showWordCheck(`${word} se desparte, după regulile generale: ${syllabify(word)}. Pentru unele cuvinte, diftongi, hiat sau excepții, verifică și într-un dicționar.`);
+});
 
 function showStorageNotice(message) {
   storageNotice.textContent = message;

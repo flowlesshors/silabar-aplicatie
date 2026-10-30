@@ -35,6 +35,23 @@
         </div>
       </section>
 
+      <section class="word-checker" aria-labelledby="word-checker-title">
+        <div class="word-checker-copy">
+          <p class="eyebrow">AI UN CUVÂNT ÎN MINTE?</p>
+          <h2 id="word-checker-title">Verifică-l aici.</h2>
+          <p>Scrie un cuvânt și află cum se desparte în silabe.</p>
+        </div>
+        <form id="word-checker-form" class="word-checker-form" novalidate>
+          <label for="custom-word">Cuvântul tău</label>
+          <div class="word-checker-controls">
+            <input id="custom-word" name="word" type="text" maxlength="32" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="de exemplu: poveste" aria-describedby="word-checker-note word-checker-result">
+            <button class="button button-dark" type="submit">Verifică <span aria-hidden="true">→</span></button>
+          </div>
+          <p id="word-checker-note" class="word-checker-note">Cuvântul este verificat pe acest dispozitiv, fără să fie trimis pe internet.</p>
+          <div id="word-checker-result" class="word-checker-result" role="status" aria-live="polite" hidden></div>
+        </form>
+      </section>
+
       <div id="storage-notice" class="storage-notice" role="status" hidden></div>
 
       <section class="practice-layout" aria-label="Exercițiu de despărțire în silabe">

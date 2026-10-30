@@ -324,6 +324,84 @@ h1 span {
   color: #7d4039;
 }
 
+.source-check {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #dfe3d9;
+}
+
+.source-check-instructions {
+  margin: 0 0 10px;
+  color: #6f766b;
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.source-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.source-link {
+  padding: 7px 10px;
+  border: 1px solid #dfe3d9;
+  border-radius: 6px;
+  background: var(--white);
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.source-link:hover {
+  border-color: #9ab09a;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.source-inputs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  margin-bottom: 10px;
+}
+
+.source-inputs label {
+  min-height: 28px;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.source-inputs input {
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  padding: 0 10px;
+  border: 1px solid #dfe3d9;
+  border-radius: 7px;
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+}
+
+.source-check-feedback {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 7px;
+  background: #e2ebdf;
+  color: #315b39;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.source-check-feedback.is-error {
+  background: var(--red-soft);
+  color: #7d4039;
+}
+
 .practice-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 310px;
@@ -780,6 +858,10 @@ h1 span {
   .word-checker {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+
+  .source-inputs {
+    grid-template-columns: 1fr;
   }
 
   .quiz-card {

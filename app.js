@@ -95,19 +95,13 @@ const storageNotice = document.querySelector("#storage-notice");
 const wordCheckerForm = document.querySelector("#word-checker-form");
 const customWordInput = document.querySelector("#custom-word");
 const wordCheckerResult = document.querySelector("#word-checker-result");
-
-const normalizeLookupWord = (word) => word.normalize("NFD").replace(/\p{M}/gu, "");
-const knownSyllabifications = new Map(
-  [...questions, ...[
-    { word: "poveste", answer: "po-ves-te" },
-    { word: "fereastra", answer: "fe-reas-tră" },
-    { word: "școală", answer: "școa-lă" },
-    { word: "caut", answer: "ca-ut" },
-    { word: "fiica", answer: "fii-ca" },
-    { word: "exemplu", answer: "e-xem-plu" },
-    { word: "geografie", answer: "ge-o-gra-fi-e" }
-  ]].map(({ word, answer }) => [normalizeLookupWord(word), answer])
-);
+const sourceCheck = document.querySelector("#source-check");
+const doomSourceLink = document.querySelector("#doom-source-link");
+const silabeSourceLink = document.querySelector("#silabe-source-link");
+const doomResultInput = document.querySelector("#doom-result");
+const silabeResultInput = document.querySelector("#silabe-result");
+const compareSourcesButton = document.querySelector("#compare-sources");
+const sourceCheckFeedback = document.querySelector("#source-check-feedback");
 const vowels = new Set(["a", "ă", "â", "e", "i", "î", "o", "u"]);
 const diphthongs = new Set([
   "ai", "au", "ea", "ei", "eu", "ia", "ie", "ii", "io", "iu",
@@ -177,8 +171,34 @@ function showWordCheck(message, isError = false) {
   wordCheckerResult.hidden = false;
 }
 
+function normalizeLetters(value) {
+  return value.normalize("NFD").replace(/\p{M}/gu, "").toLocaleLowerCase("ro-RO")
+    .replaceAll("ş", "s")
+    .replaceAll("ţ", "t");
+}
+
+function readSourceSyllabification(value, word) {
+  const syllables = value.trim().split(/[\s\-‐‑‒–—•·]+/u);
+  if (
+    syllables.length < 2
+    || syllables.some((syllable) => !/^[a-zăâîșț]+$/iu.test(syllable))
+    || normalizeLetters(syllables.join("")) !== normalizeLetters(word)
+  ) {
+    return null;
+  }
+
+  return syllables.map((syllable) => normalizeLetters(syllable));
+}
+
+function setSourceCheckFeedback(message, isError = false) {
+  sourceCheckFeedback.textContent = message;
+  sourceCheckFeedback.classList.toggle("is-error", isError);
+  sourceCheckFeedback.hidden = false;
+}
+
 wordCheckerForm.addEventListener("submit", (event) => {
   event.preventDefault();
+  sourceCheck.hidden = true;
   const word = customWordInput.value.trim().normalize("NFC").toLocaleLowerCase("ro-RO")
     .replaceAll("ş", "ș")
     .replaceAll("ţ", "ț");
@@ -195,13 +215,42 @@ wordCheckerForm.addEventListener("submit", (event) => {
     return;
   }
 
-  const knownAnswer = knownSyllabifications.get(normalizeLookupWord(word));
-  if (knownAnswer) {
-    showWordCheck(`${word} se desparte: ${knownAnswer}. Această despărțire a fost verificată.`);
+  const doomUrl = new URL(`/cautare/q/${encodeURIComponent(word)}`, "https://doom.lingv.ro");
+  const plainWord = word.normalize("NFD").replace(/\p{M}/gu, "")
+    .replaceAll("ă", "a")
+    .replaceAll("â", "a")
+    .replaceAll("î", "i")
+    .replaceAll("ș", "s")
+    .replaceAll("ț", "t");
+  doomSourceLink.href = doomUrl.href;
+  silabeSourceLink.href = `https://www.silabe.ro/desparte-in-silabe-${encodeURIComponent(plainWord)}.html`;
+  doomResultInput.value = "";
+  silabeResultInput.value = "";
+  sourceCheckFeedback.hidden = true;
+  sourceCheckFeedback.className = "source-check-feedback";
+  sourceCheck.hidden = false;
+  showWordCheck(`Estimare automată (neverificată): ${syllabify(word)}. Nu o considera corectă până când două surse independente nu afișează aceeași despărțire completă.`);
+});
+
+compareSourcesButton.addEventListener("click", () => {
+  const word = customWordInput.value.trim().normalize("NFC").toLocaleLowerCase("ro-RO")
+    .replaceAll("ş", "ș")
+    .replaceAll("ţ", "ț");
+  const doomSyllables = readSourceSyllabification(doomResultInput.value, word);
+  const silabeSyllables = readSourceSyllabification(silabeResultInput.value, word);
+
+  if (!doomSyllables || !silabeSyllables) {
+    setSourceCheckFeedback("Nu este confirmat. Introdu despărțirea completă din ambele surse, cu cel puțin două silabe, și verifică să corespundă cuvântului.", true);
     return;
   }
 
-  showWordCheck(`${word} se desparte, după regulile generale: ${syllabify(word)}. Pentru unele cuvinte, diftongi, hiat sau excepții, verifică și într-un dicționar.`);
+  if (doomSyllables.join("|") !== silabeSyllables.join("|")) {
+    setSourceCheckFeedback("Sursele nu coincid. Cuvântul rămâne neverificat; consultă un profesor sau o lucrare de specialitate.", true);
+    return;
+  }
+
+  const confirmed = doomResultInput.value.trim().split(/[\s\-‐‑‒–—•·]+/u).join("-");
+  setSourceCheckFeedback(`Cele două transcrieri coincid: ${confirmed}. Confirmat doar pentru această verificare manuală; estimarea automată nu este folosită drept dovadă.`);
 });
 
 function showStorageNotice(message) {
